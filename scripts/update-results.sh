@@ -9,12 +9,9 @@ echo "Extracting test history from results.json..."
 testHistory=$(jq '[.testResults[].assertionResults[] | {testName: .title, testStatus: .status}]' results.json)
 numPassed=$(jq '.numPassedTests' results.json)
 numTotal=$(jq '.numTotalTests' results.json)
-# echo "Formatted Test History: $testHistory"
-testScore="${numPassed}/${numTotal}"
-#resultSummary=$(jq -n --argjson history "$testHistory" '{ result_summary: $history }')
-#submittedAt=$(date +"%Y-%m-%dT%H:%M:%S%:z")
 
-#echo "Payload to PATCH: $resultSummary"
+testScore="${numPassed}/${numTotal}"
+
 payload=$(jq -n \
   --argjson summary "$testHistory" \
   --arg score "$testScore" \
